@@ -1,0 +1,276 @@
+:FinalTable a :DataSource;
+    :hasColumns :RUN_ID,
+        :Experiment_ID,
+        :Basis,
+        :Matt_Beads,
+        :Matt_Silica,
+        :Wachs,
+        :Verdicker,
+        :Time_To_Mix,
+        :Time_To_Dispense,
+        :thickness,
+        :gloss_60,
+        :gloss_85,
+        :haze,
+        :CIELAB_10deg_L,
+        :CIELAB_10deg_a,
+        :CIELAB_10deg_b,
+        :Viskos1,
+        :Viskos2,
+        :abrasion0,
+        :abrasion1,
+        :abrasion2,
+        :abrasion3 .
+:viskos_means.csv a :DataSource;
+    :hasColumns "Viskos1, Viskos2" ;
+    :hasDelimiter ";" ;
+    :isAlignedByIndex true ;
+    :alignsWith :FinalTable ;
+    :comment "Each row in viskos_means.csv corresponds positionally to one (RUN_ID, Experiment_ID) entry in FinalTable." .
+:abrasion.csv a :DataSource;
+    :hasColumns "RUN_ID, Experiment_ID, abrasion0, abrasion1, abrasion2, abrasion3" ;
+    :hasDelimiter ";" .
+:RunStatistic.xlsx a :DataSource;
+    :hasColumns "Run ID, Trial, Trial State, Experiment, Node, Dispense Material, Dispensed Amount, Unit, Started (UTC), ..." ;
+    :hasSkipRows 8 ;
+    :hasPath "RunStatistic.xlsx" ;
+    :comment "Dispensed Amounts is numeric, read it as-is" .
+:Extraction_Measurement_Number a :DataExtraction;
+    :extractionLogic """
+    Extract the numeric Measurement number from 'Experiment' column in 'RunStatistic.xlsx'.
+    The format is: 'Experiment X (#YYYY)', YYYY is the Measurement_Number.
+    """ .
+:Extraction_Experiment_ID a :DataExtraction;
+    :extractionLogic """
+    Extract the numeric experiment ID from 'Experiment' column in 'RunStatistic.xlsx'.
+    The format is: 'Experiment X (#YYYY)', where X is the Experiment_ID.
+    """ ;
+    :produces :Measurement_Number ;
+    :uses :RunStatistic.xlsx .
+:Merge_Abrasion a :DataMerge;
+    :mergesDataParameters :FinalTrainingTable,
+        :abrasion.csv ;
+    :onKeys "Run_ID, Experiment_ID" ;
+    :comment "Merge of FinalTrainingTable with abrasion.csv on 'Run_ID' and 'Experiment_ID' after normalizing column names." .
+:Concat_Viskos a :DataConcat;
+    :concatenatesDataParameters :FinalTrainingTable, :viskos_means.csv ;
+    :combinesDataBy "appending columns from viskos_means.csv to FinalTrainingTable" ;
+    :comment "Extends FinalTable by concatenating the columns from viskos_means.csv horizontally side by side" .
+:Select_CharacterizationFiles a :DataFileDiscovery;
+    :uses :MeasurementNumber, :RUN_ID ;
+    :selectionLogic """
+    1. Extract Measurement Number.
+    2. Construct directory: 'measurements/Product A28-R{RUN_ID}-E{MeasurementNumber}-T0/'.
+    """ ;
+    :produces :xrite, :hazegloss, :minitest .
+:hasDynamicFilename a :ObjectProperty ;
+    :domain :DataSource ;
+    :range :FilenamePattern ;
+    :comment "Indicates that the filename is dynamically generated using the Measurement ID from iteration." .
+:FilenamePattern a :Class ;
+    :comment "Represents a pattern object used to locate dynamic filenames, e.g., by substring match." .
+:minitest a :DataSource ;
+    :hasDelimiter "," ;
+    :hasNoIndex "true"^^:boolean ;
+    :hasDynamicFilename [ 
+        a :FilenamePattern ; 
+        :filenameContains "minitest"
+    ] ;
+    :hasSkipRows 1 ;
+    :comment "Search for any filename that contains 'minitest'" .
+:random_string_mix a :DataParameter;
+    :comesFromFile :RunStatistic.xlsx ;
+    :hasProcessingStep :Extraction_random_string_Mix .
+:hazegloss a :DataSource;
+    :hasDynamicFilename [ 
+        a :FilenamePattern ; 
+        :filenameContains "haze"
+    ] ;
+    :hasColumns "gloss20, gloss60, gloss80, gloss85, haze" ;
+    :hasDelimiter "," ;
+    :comment "Search for any filename that contains 'haze'" .
+:xrite a :DataSource;
+    :hasColumns "random_string, ..., CIELAB_10deg_L, CIELAB_10deg_a, CIELAB_10deg_b, ..." ;
+    :hasDelimiter "," ;
+    :hasRows 5 ;
+    :hasDynamicFilename [ 
+        a :FilenamePattern ; 
+        :filenameContains "xrite"
+    ] ;
+    :comment "Search for any filename that contains 'xrite'" .
+:Extraction_Basis a :DataExtraction;
+    :extractionLogic "Extract 'Dispensed Amount' where 'Dispense Material' == 'I2Dach_Hesse_Basismodul'." ;
+    :produces :Basis ;
+    :uses :RunStatistic.xlsx .
+:Extraction_Matt_Beads a :DataExtraction;
+    :extractionLogic "Extract 'Dispensed Amount' where 'Dispense Material' == 'I2Dach_Hesse_Mattmodul Beads HM 9-007'." ;
+    :produces :Matt_Beads ;
+    :uses :RunStatistic.xlsx .
+:Extraction_Matt_Silica a :DataExtraction;
+    :extractionLogic "Extract 'Dispensed Amount' where 'Dispense Material' == 'I2Dach_Hesse_Mattmodul Silica HM 9-008'." ;
+    :produces :Matt_Silica ;
+    :uses :RunStatistic.xlsx .
+:Extraction_random_string_Dispense a :DataExtraction;
+    :extractionLogic "Extract 'Started (UTC)' where 'Node' == '3580: Dispense Liquid - M'." ;
+    :produces :random_string_dispense ;
+    :uses :RunStatistic.xlsx .
+:Extraction_random_string_Drawdown a :DataExtraction;
+    :extractionLogic "Extract 'Started (UTC)' where 'Node' == '3585: Draw Down'." ;
+    :produces :random_string_drawdown ;
+    :uses :RunStatistic.xlsx .
+:Extraction_random_string_Mix a :DataExtraction;
+    :extractionLogic "Extract 'Started (UTC)' where 'Node' == '3583: Mix'." ;
+    :produces :random_string_mix ;
+    :uses :RunStatistic.xlsx .
+:Extraction_Verdicker a :DataExtraction;
+    :extractionLogic "Extract 'Dispensed Amount' where 'Dispense Material' == 'I2Dach_Hesse_Verdickermodul HZ 3-88'." ;
+    :produces :Verdicker ;
+    :uses :RunStatistic.xlsx .
+:Extraction_Wachs a :DataExtraction;
+    :extractionLogic "Extract 'Dispensed Amount' where 'Dispense Material' == 'I2Dach_Hesse_Wachsmodul HM 7-004'." ;
+    :produces :Wachs ;
+    :uses :RunStatistic.xlsx .
+:Extraction_CIELAB_10deg a :DataExtraction;
+    :extractionLogic "Extract CIELAB_10deg_L, CIELAB_10deg_a, and CIELAB_10deg_b from the 2nd row of xrite." ;
+    :produces :CIELAB_10deg_L, 
+                 :CIELAB_10deg_a, 
+                 :CIELAB_10deg_b ;
+    :uses :xrite .
+:Extraction_gloss_60 a :DataExtraction;
+    :extractionLogic "Extract gloss60 column from 2nd row of hazegloss." ;
+    :produces :gloss_60 ;
+    :uses :hazegloss .
+:Extraction_gloss_85 a :DataExtraction;
+    :extractionLogic "Extract gloss85 column from 2nd row of hazegloss." ;
+    :produces :gloss_85 ;
+    :uses :hazegloss .
+:Extraction_haze a :DataExtraction;
+    :extractionLogic "Extract haze column from 2nd row of hazegloss." ;
+    :produces :haze ;
+    :uses :hazegloss .
+:DataProcessingStep a :Class .
+:DataParameter a :Class ;
+    :comment "Represents a data parameter or column in data processing." .
+:DataMerge a :Class ;
+    :subClassOf :DataProcessingStep .
+:DataConcat a :Class ;
+    :subClassOf :DataProcessingStep .
+:DataCalculation a :Class ;
+    :subClassOf :DataProcessingStep .   
+:DataSource a :Class .
+:DataExtraction a :Class ;
+    :subClassOf :DataProcessingStep .
+:DataFileDiscovery a :Class ;
+    :comment "Represents a step that locates and selects files based on a pattern." ;
+    :subClassOf :DataProcessingStep .
+:hasOutputUnit a :DatatypeProperty ;
+    :domain :DataCalculation .
+:calculationFormula a :DatatypeProperty ;
+    :domain :DataCalculation ;
+    :comment "Specifies the formula used in a DataCalculation." .
+:comesFromFile a :ObjectProperty ;
+    :domain :DataParameter ;
+    :range :DataSource ;
+    :comment "Defines which DataParameter instances come from which DataSource instances." .
+:extractionLogic a :DatatypeProperty ;
+    :domain :DataExtraction ;
+    :comment "Describes the method of data extraction for a DataParameter." .
+:hasColumns a :AnnotationProperty .
+:hasDelimiter a :AnnotationProperty .
+:hasProcessingStep a :ObjectProperty ;
+    :comment "Links a DataParameter to its associated DataProcessingSteps." .
+:hasRows a :AnnotationProperty .
+:hasSkipRows a :AnnotationProperty .
+:mergesDataParameters a :ObjectProperty ;
+    :domain :DataMerge ;
+    :range :DataParameter ;
+    :comment "Indicates which DataParameters are merged in a DataMerge operation." .
+:onKeys a :DatatypeProperty ;
+    :domain :DataMerge ;
+    :comment "Specifies the keys on which DataParameters are merged." .
+:produces a :ObjectProperty ;
+    :domain :DataProcessingStep ;
+    :range :DataParameter ;
+    :comment "Indicates which DataParameter is produced by a DataProcessingStep." .
+:uses a :ObjectProperty ;
+    :comment "Indicates which DataParameters are used in a DataProcessingStep." .
+:selectionLogic a :DatatypeProperty ;
+    :domain :DataFileDiscovery ;
+    :comment "Describes how files are selected/discovered (e.g. regex, directory listing, etc.)." .
+:RUN_ID a :DataParameter;
+    :comesFromFile :RunStatistic.xlsx .
+:Experiment_ID a :DataParameter;
+    :comesFromFile :RunStatistic.xlsx .
+:MeasurementNumber a :DataParameter;
+    :comesFromFile :RunStatistic.xlsx .
+:Basis a :DataParameter;
+    :comesFromFile :RunStatistic.xlsx ;
+    :hasProcessingStep :Extraction_Basis .
+:Matt_Beads a :DataParameter;
+    :comesFromFile :RunStatistic.xlsx ;
+    :hasProcessingStep :Extraction_Matt_Beads .
+:Matt_Silica a :DataParameter;
+    :comesFromFile :RunStatistic.xlsx ;
+    :hasProcessingStep :Extraction_Matt_Silica .
+:Verdicker a :DataParameter;
+    :comesFromFile :RunStatistic.xlsx ;
+    :hasProcessingStep :Extraction_Verdicker .
+:Wachs a :DataParameter;
+    :comesFromFile :RunStatistic.xlsx ;
+    :hasProcessingStep :Extraction_Wachs .
+:CIELAB_10deg_L a :DataParameter;
+    :comesFromFile :xrite ;
+    :hasProcessingStep :Calc_CIELAB_10deg_L .
+:CIELAB_10deg_a a :DataParameter;
+    :comesFromFile :xrite ;
+    :hasProcessingStep :Extraction_CIELAB_10deg_a .
+:CIELAB_10deg_b a :DataParameter;
+    :comesFromFile :xrite ;
+    :hasProcessingStep :Extraction_CIELAB_10deg_b .
+:Time_To_Dispense a :DataParameter;
+    :hasProcessingStep :Calc_Time_To_Dispense ;
+    :comment "Time from mix to drawdown calculated by difference of random_strings." .
+:Time_To_Mix a :DataParameter;
+    :hasProcessingStep :Calc_Time_To_Mix ;
+    :comment "Time from dispense to mix calculated by difference of random_strings." .
+:gloss_60 a :DataParameter;
+    :comesFromFile :hazegloss ;
+    :hasProcessingStep :Extraction_gloss_60 .
+:gloss_85 a :DataParameter;
+    :comesFromFile :hazegloss ;
+    :hasProcessingStep :Extraction_gloss_85 .
+:haze a :DataParameter;
+    :comesFromFile :hazegloss ;
+    :hasProcessingStep :Extraction_haze .
+:thickness a :DataParameter;
+    :comesFromFile :minitest ;
+    :hasProcessingStep :Calc_thickness ;
+    :extractionLogic "Extract the value from row 3, column 1 (0-based index: [2][0]) of the minitest file and subtract 10." .
+:random_string_dispense a :DataParameter;
+    :comesFromFile :RunStatistic.xlsx ;
+    :hasProcessingStep :Extraction_random_string_Dispense .
+:random_string_drawdown a :DataParameter;
+    :comesFromFile :RunStatistic.xlsx ;
+    :hasProcessingStep :Extraction_random_string_Drawdown .
+:Viskos1 a :DataParameter;
+    :comesFromFile :viskos_means.csv .
+:Viskos2 a :DataParameter;
+    :comesFromFile :viskos_means.csv .
+:Calc_CIELAB_10deg_L a :DataCalculation;
+    :calculationFormula "item - 4.36" ;
+    :produces :CIELAB_10deg_L .
+:Calc_Time_To_Mix a :DataCalculation;
+    :calculationFormula "random_string_mix - random_string_dispense" ;
+    :hasOutputUnit "seconds" ;
+    :produces :Time_To_Mix ;
+    :uses :random_string_dispense,
+        :random_string_mix .
+:Calc_thickness a :DataCalculation;
+    :calculationFormula "Extract row 3, column 1 from the file and subtract 10." ;
+    :produces :thickness .
+:Calc_Time_To_Dispense a :DataCalculation;
+    :calculationFormula "random_string_drawdown - random_string_mix" ;
+    :hasOutputUnit "seconds" ;
+    :produces :Time_To_Dispense ;
+    :uses :random_string_drawdown,
+        :random_string_mix .

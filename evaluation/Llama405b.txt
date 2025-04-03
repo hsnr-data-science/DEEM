@@ -1,0 +1,4 @@
+Run | Time | Retries | Total LLM Calls | Succes | Link | 
+1 | 269.19secs | 3 | 4 | X | https://docs.google.com/document/d/1H9nF7BJMFrLahVtNxNaYSC_4ndN2trfNhPrLP9xxxaE/edit?usp=sharing | 67.3
+2 | 284.30secs | 3 | 4 | X | https://docs.google.com/document/d/1posg-1aiG_e9rNQO3kQ4zCcYguZhY8wFrQO83gTovR4/edit?usp=sharing | 71.08
+3 | 229.03secs | 3 | 4 | X | https://docs.google.com/document/d/1RdL79tSbl4Q3gJkUBjYmGmX20HR531yyjGDctxD8IFo/edit?usp=sharing | 57.26

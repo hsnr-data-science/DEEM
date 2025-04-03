@@ -1,0 +1,4 @@
+Run | Time | Retries | Total LLM Calls | Success | Link
+1 | 2:46min | 0 | 1 | Y | https://chatgpt.com/share/67e27e1f-faf8-8006-a236-3d3c1c05b3c7 | 02:46min
+2 | 1:18min | 0 | 1 | Y | https://chatgpt.com/share/67e28063-f93c-8006-ac7e-46a774d4c692 | 01:18min
+3 | 3:38min | 1 | 2 | Y | https://chatgpt.com/share/67e2826b-377c-8006-8e45-87af5cfdda03 | 01:49min
