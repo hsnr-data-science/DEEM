@@ -19,7 +19,7 @@ We use a **semantic model** to provide structured metadata and guide LLMs (e.g.,
 
 ## 🧪 Project Structure
 
-```bash
+```text
 DEEM/
 ├── abrasion.csv                   # Raw abrasion test data
 ├── compare_dataframes.py         # Utility for comparing processed DataFrames
@@ -31,9 +31,7 @@ DEEM/
 ├── Testing_for_Evaluation.ipynb  # Notebook for evaluating LLM outputs
 ├── SM.txt                        # Semantic model (data source definition)
 └── viskos_means.csv              # Raw Viscosity measurements
-
-
-## 📘 Citation
+```
 
 If you use this work, please cite the following paper:
 
