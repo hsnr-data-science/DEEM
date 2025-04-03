@@ -13,7 +13,7 @@ Hochschule Niederrhein University of Applied Sciences, Fraunhofer FIT
 
 ## 📄 Abstract
 
-Machine Learning (ML) in industrial chemistry is often hindered by the complexity of preprocessing heterogeneous datasets. This proof-of-concept study explores how semantic data management can support **LLM-driven automation** of end-to-end ML pipelines in a real-world Chemistry 4.0 setting.
+Machine Learning (ML) in industrial chemistry is often hindered by the complexity of preprocessing heterogeneous datasets. In this proof-of-concept study, we explore the use of semantic data manage- ment to support LLM-driven automation of end-to-end ML pipelines in a real-world Chemistry 4.0 setting. A semantic model is used to capture domain knowledge and metadata in a machine-readable form, guiding LLMs through natural language prompts to generate complete data wrangling and ML modeling code. We evaluate sev- eral state-of-the-art LLMs on their ability to autonomously produce functionally correct Python code for preprocessing and Gaussian Process modeling. Our results show that, when guided by struc- tured semantic context, larger LLMs can reliably generate accurate pipelines, significantly reducing the need for manual intervention. These findings provide an encouraging starting point for further exploration toward leveraging the semantic model to improve the robustness of code generation by systematically integrating rele- vant information into the generation process, rather than relying solely on the raw intelligence of the LLM.
 
 We use a **semantic model** to provide structured metadata and guide LLMs (e.g., GPT-4, Gemini, LLaMA) via natural language prompts for code generation in data wrangling and Gaussian Process modeling. The results show that, with structured context, larger LLMs can generate functional pipelines with minimal human intervention.
 
@@ -23,12 +23,11 @@ We use a **semantic model** to provide structured metadata and guide LLMs (e.g.,
 DEEM/
 ├── abrasion.csv                   # Raw abrasion test data
 ├── compare_dataframes.py         # Utility for comparing processed DataFrames
-├── data_points.txt               # Example timeline of robotic experiment steps
-├── evaluation/                   # LLM output evaluations (ChatGPT, DeepSeek, etc.)
-├── measurements/                 # Raw measurement data per product
-├── prompts.ipynb                 # Jupyter notebook with prompt examples
-├── target.csv                    # Final processed ML-ready dataset
+├── data_points.txt               # Example data points for the inital prompt
+├── evaluation/                   # LLM output evaluations
+├── measurements/                 # Raw measurement data
+├── prompts.ipynb                 # Jupyter notebook with prompts as helper for copy-pasting into chat window
+├── target.csv                    # Target ML-ready dataset
 ├── Testing_for_Evaluation.ipynb  # Notebook for evaluating LLM outputs
-├── SM.txt                        # RDF-style semantic model (data source definition)
-├── viskos_means.csv              # Viscosity measurements
-└── README.md                     # You're here
+├── SM.txt                        # Semantic model (data source definition)
+└── viskos_means.csv              # Raw Viscosity measurements
