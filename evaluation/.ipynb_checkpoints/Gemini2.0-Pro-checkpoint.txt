@@ -1,4 +1,0 @@
-Run | Time | Retries | Total LLM Calls | Succes | Link
-1 | 00:59min | 0 | 1 | Y | https://docs.google.com/document/d/1QXjwblOF6_ovH_MOfy1OGtZkRp9ztfvt1Jh9m5Txucs/edit?usp=sharing | 00:59min
-2 | 00:53min | 0 | 1 | Y | https://docs.google.com/document/d/1jfimJwqNbgpawwlREiyfwHAaIjwpqkvOWhpjZcCWcYk/edit?usp=sharing | 00:53min
-3 | 00:35min | 0 | 1 | Y | https://docs.google.com/document/d/19oGMW_G8I3GbsFDHD8h_SRnfalWEETWKCqKUkeWLFPU/edit?usp=sharing | 00:35min

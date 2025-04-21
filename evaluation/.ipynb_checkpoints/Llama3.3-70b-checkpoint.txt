@@ -1,4 +1,0 @@
-Run | Time | Retries | Total LLM Calls | Succes | Link
-1 | 37.71+37.92+37.26+37.69 | 3 | 4 | X | https://docs.google.com/document/d/1Ta9U1oYbv98Jq0fKEwa4xdRCFmbrKUwXaSE_ECQZlK0/edit?usp=sharing
-2 | | 3 | 4 | X |
-3 | | 3 | 4 | X |

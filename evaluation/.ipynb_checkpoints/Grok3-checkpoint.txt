@@ -1,4 +1,0 @@
-Run | Time | Retries | Total LLM Calls | Succes | Link
-1 | 1:56min | 3 | 4 | Yes | https://grok.com/share/bGVnYWN5_f50d69b2-ef42-4e03-ae63-54e4b65ce938
-2 | 0:27min | 0 | 1 | Yes | https://grok.com/share/bGVnYWN5_1a2530a3-ecbb-4c8f-b16e-04e8e2f0cb34
-3 | 2:22 | 4 | 5 | X | https://grok.com/share/bGVnYWN5_76af7be6-4044-468b-bfc9-908c6a1d33aa
