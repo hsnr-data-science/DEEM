@@ -36,12 +36,19 @@ DEEM/
 If you use this work, please cite the following paper:
 
 ```bibtex
-@inproceedings{hoseini2025chemistry,
-  title={End-To-End ML with LLMs and Semantic Data Management: Experiences from Chemistry 4.0},
-  author={Hoseini, Sayed and Herrmann, Vincent and Quix, Christoph},
-  booktitle={Proceedings of the Workshop on Data Management for End-to-End Machine Learning (DEEM)},
-  year={2025},
-  publisher={ACM},
-  note={submitted - under review}
+@inproceedings{10.1145/3735654.3735942,
+author = {Hoseini, Sayed and Herrmann, Vincent and Quix, Christoph},
+title = {End-To-End ML with LLMs and Semantic Data Management: Experiences from Chemistry 4.0},
+year = {2025},
+isbn = {9798400719240},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3735654.3735942},
+doi = {10.1145/3735654.3735942},
+articleno = {6},
+numpages = {10},
+keywords = {AutoML, Data Wrangling, LLMs, Semantic Data Management},
+location = {Berlin, Germany},
+series = {DEEM '25}
 }
 
