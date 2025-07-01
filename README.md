@@ -6,7 +6,7 @@
 
 This repository accompanies the paper:
 
-**"[End-To-End ML with LLMs and Semantic Data Management: Experiences from Chemistry 4.0]{https://dl.acm.org/doi/10.1145/3735654.3735942}"**  
+**[End-To-End ML with LLMs and Semantic Data Management: Experiences from Chemistry 4.0](https://dl.acm.org/doi/10.1145/3735654.3735942)**
 Sayed Hoseini, Vincent Herrmann, Christoph Quix  
 Hochschule Niederrhein University of Applied Sciences, Fraunhofer FIT  
 📅 DEEM ’25 — Workshop on Data Management for End-to-End Machine Learning
